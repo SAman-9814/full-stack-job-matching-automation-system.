@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ─── Fonts ─────────────────────────────────────────── */
+  --font-main: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
+
+  /* ─── Light Mode Brand Palette ───────────────────────── */
+  /* Translucent white/sky glass for cards & containers */
+  --color-card-light:       rgba(255, 255, 255, 0.72);
+  --color-card-light-hover: rgba(255, 255, 255, 0.92);
+  /* Sky-blue & royal-blue borders */
+  --color-border-light:       rgba(168, 229, 253, 0.45);
+  --color-border-light-hover: rgba(37,  99,  235, 0.55);
+  /* Typography */
+  --color-text-light:       #0c182b;   /* deep ocean navy */
+  --color-text-light-body:  #203147;   /* slate-indigo */
+  --color-text-light-muted: #4e6178;   /* soft slate-blue */
+
+  /* ─── Dark Mode Brand Palette ────────────────────────── */
+  /* Translucent deep-sapphire glass */
+  --color-card-dark:       rgba(18, 27, 61, 0.6);
+  --color-card-dark-hover: rgba(28, 39, 81, 0.75);
+  /* Violet / cyan borders */
+  --color-border-dark:       rgba(139, 92,  246, 0.18);
+  --color-border-dark-hover: rgba(0,   242, 254, 0.55);
+  /* Typography */
+  --color-text-dark:       #f1f5f9;
+  --color-text-dark-body:  #94a3b8;
+  --color-text-dark-muted: #64748b;
+
+  /* ─── Accent Colours (shared) ────────────────────────── */
+  --color-accent-violet: #7c3aed;
+  --color-accent-cyan:   #06b6d4;
+  --color-accent-emerald:#10b981;
+  --color-accent-rose:   #f43f5e;
+
+  /* ─── Animations ────────────────────────────────────── */
+  --animate-logo-float:           logoFloat 4s ease-in-out infinite;
+  --animate-logo-pulse-glow:      logoPulseGlow 3s ease-in-out infinite;
+  --animate-logo-gradient-shift:  logoGradientShift 6s ease infinite;
+  --animate-logo-spark:           logoSpark 0.5s ease-in-out;
+  --animate-pulse-dot:            pulse-dot 1.8s ease-in-out infinite;
+  --animate-grow-bar:             growBar 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-slide-down:           slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-modal-slide-up:       modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+  }
+  @keyframes logoPulseGlow {
+    0%, 100% { box-shadow: 0 4px 20px rgba(168,229,253,0.4), 0 0 10px rgba(124,58,237,0.15); }
+    50%       { box-shadow: 0 6px 36px rgba(168,229,253,0.65), 0 0 28px rgba(124,58,237,0.3); }
+  }
+  @keyframes logoGradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes logoSpark {
+    0%   { transform: scale(1) rotate(0deg);   filter: drop-shadow(0 0 0px rgba(124,58,237,0)); }
+    50%  { transform: scale(1.2) rotate(180deg); filter: drop-shadow(0 0 8px rgba(124,58,237,0.55)); }
+    100% { transform: scale(1) rotate(360deg); filter: drop-shadow(0 0 0px rgba(124,58,237,0)); }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.4; transform: scale(0.8); }
+    50%       { opacity: 1;   transform: scale(1.2); }
+  }
+  @keyframes growBar {
+    from { width: 0% !important; }
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes modalSlideUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+
+/* ── Custom Base Styles ──────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    /* ── Light: soft pink-to-sky pastel gradient ── */
+    background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(248,180,244,1) 0%, rgba(169,219,237,1) 90%);
+    background-attachment: fixed;
+    font-family: var(--font-main);
+    color: var(--color-text-light);
+    min-height: 100vh;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+  /* ── Dark: midnight sapphire ── */
+  body.dark-theme, html.dark body {
+    background-image: radial-gradient(circle 900px at 50% -120px, rgba(81,90,218,0.22), rgba(8,13,33,1) 100%);
+    background-color: #080d21;
+    color: var(--color-text-dark);
+  }
+
+  /* ── Scrollbars ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(168,229,253,0.35);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(37,99,235,0.45); }
+
+  body.dark-theme ::-webkit-scrollbar-thumb,
+  html.dark       ::-webkit-scrollbar-thumb {
+    background: rgba(139,92,246,0.2);
+  }
+  body.dark-theme ::-webkit-scrollbar-thumb:hover,
+  html.dark       ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,242,254,0.45);
+  }
+}
