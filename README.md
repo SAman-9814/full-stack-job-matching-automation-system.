@@ -23,17 +23,17 @@ CareerSync AI is a full-stack job-matching automation system. An **n8n workflow*
 
 ### 🖥️ Dashboard Interface
 <p align="center">
-  <img src="./screenshots/dashboard_ui.png" alt="React Dashboard UI" width="750" />
+  <img src="./screenshots/dashboard_ui.png" alt="React Dashboard UI" width="400" height="400" />
 </p>
 
 ### 🤖 n8n Automation Workflow Canvas
 <p align="center">
-  <img src="./screenshots/n8n_workflow.png" alt="n8n Workflow" width="750" />
+  <img src="./screenshots/n8n_workflow.png" alt="n8n Workflow" width="400" height="400" />
 </p>
 
 ### 💡 Detailed AI Fit Analysis & Tailored Cover Letter Modal
 <p align="center">
-  <img src="./screenshots/detail_modal.png" alt="Job Detail & Analysis Modal" width="750" />
+  <img src="./screenshots/detail_modal.png" alt="Job Detail & Analysis Modal" width="400" height="400" />
 </p>
 
 ---
