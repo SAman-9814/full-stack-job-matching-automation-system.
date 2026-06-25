@@ -20,8 +20,25 @@ function App() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
+  // Toast Notification States
+  const [toast, setToast] = useState(null);
+  const [toastTimeout, setToastTimeout] = useState(null);
+
+  const showToast = (message, type = 'success') => {
+    if (toastTimeout) clearTimeout(toastTimeout);
+    setToast({ message, type });
+    const timeout = setTimeout(() => setToast(null), 3000);
+    setToastTimeout(timeout);
+  };
+
   useEffect(() => {
-    fetchJobs();
+    return () => {
+      if (toastTimeout) clearTimeout(toastTimeout);
+    };
+  }, [toastTimeout]);
+
+  useEffect(() => {
+    fetchJobs(true);
   }, []);
 
   // Theme Sync Effect
@@ -36,7 +53,7 @@ function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const fetchJobs = async () => {
+  const fetchJobs = async (silent = false) => {
     setLoading(true);
     try {
       const response = await fetch(`${API_URL}/api/jobs`);
@@ -46,9 +63,13 @@ function App() {
       const data = await response.json();
       setJobs(data);
       setError(null);
+      if (!silent) {
+        showToast('Refreshed job listings successfully!');
+      }
     } catch (err) {
       console.error(err);
       setError('Could not connect to backend server. Make sure it is running on port 5000 and MONGODB_URI is set.');
+      showToast('Could not fetch jobs from server.', 'error');
     } finally {
       setLoading(false);
     }
@@ -66,12 +87,13 @@ function App() {
         if (selectedJob && selectedJob._id === id) {
           setSelectedJob(null);
         }
+        showToast('Job application deleted successfully.');
       } else {
-        alert('Failed to delete job.');
+        showToast('Failed to delete job.', 'error');
       }
     } catch (err) {
       console.error(err);
-      alert('Error connecting to backend server.');
+      showToast('Error connecting to backend server.', 'error');
     }
   };
 
@@ -79,6 +101,7 @@ function App() {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+    showToast('Cover letter copied to clipboard!');
   };
 
   // Stats calculation
@@ -490,6 +513,24 @@ function App() {
               </section>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── Toast Notification ───────────────────────────────── */}
+      {toast && (
+        <div
+          className={`fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-4 rounded-2xl shadow-xl border backdrop-blur-md animate-toast-slide-in ${
+            toast.type === 'error'
+              ? 'bg-rose-500/90 text-white border-rose-400/30'
+              : toast.type === 'info'
+              ? 'bg-sky-500/90 text-white border-sky-400/30'
+              : 'bg-emerald-600/90 text-white border-emerald-500/30'
+          }`}
+        >
+          <span className="text-xl">
+            {toast.type === 'error' ? '❌' : toast.type === 'info' ? 'ℹ️' : '✅'}
+          </span>
+          <span className="font-bold text-sm sm:text-[14.5px]">{toast.message}</span>
         </div>
       )}
     </div>
