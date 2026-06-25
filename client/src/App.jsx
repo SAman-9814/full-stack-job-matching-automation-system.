@@ -354,7 +354,7 @@ function App() {
                     </button>
                   </div>
                   <h2 className={`text-xl sm:text-[22px] font-bold leading-snug mb-2 ${textMain} line-clamp-2 text-left`}>{job.title}</h2>
-                  <p className={`${textMuted} text-sm sm:text-[15px] font-medium mb-3 text-left`}>🌐 {job.url.split('/')[2] || 'Remote Job Board'}</p>
+                  <p className={`${textMuted} text-sm sm:text-[15px] font-medium mb-3 text-left`}>🌐 {job.url?.split('/')?.[2] || 'Remote Job Board'}</p>
                   <p className={`${textBody} text-sm sm:text-[15.5px] leading-relaxed mb-5 line-clamp-3 text-left`}>{job.fit_summary}</p>
                   <div className="text-[14px] font-semibold text-blue-600 dark:text-cyan-400 text-left flex items-center gap-1">
                     <span>View Details &amp; Cover Letter</span>
@@ -435,9 +435,11 @@ function App() {
             <header className={`p-6 sm:p-7 border-b border-[rgba(168,229,253,0.35)] dark:border-[rgba(139,92,246,0.18)] flex justify-between items-start`}>
               <div className="text-left">
                 <h2 className={`text-2xl sm:text-3xl font-bold leading-snug ${textMain}`}>{selectedJob.title}</h2>
-                <a href={selectedJob.url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-cyan-400 text-sm sm:text-[14.5px] font-bold hover:underline">
-                  Open Job Posting 🔗
-                </a>
+                {selectedJob.url && (
+                  <a href={selectedJob.url} target="_blank" rel="noreferrer" className="text-blue-600 dark:text-cyan-400 text-sm sm:text-[14.5px] font-bold hover:underline">
+                    Open Job Posting 🔗
+                  </a>
+                )}
               </div>
               <button
                 className={`bg-white/40 dark:bg-[rgba(10,15,40,0.5)] border border-[rgba(168,229,253,0.4)] dark:border-[rgba(139,92,246,0.18)] ${textMuted} w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-blue-100/60 dark:hover:bg-[rgba(0,242,254,0.1)] hover:text-blue-700 dark:hover:text-cyan-300 text-base`}
