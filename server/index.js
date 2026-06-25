@@ -71,6 +71,15 @@ app.get('/api/jobs', async (req, res) => {
 
 // POST /api/jobs — save a new matched job (called from n8n HTTP Request node)
 app.post('/api/jobs', async (req, res) => {
+  const { title, url } = req.body;
+
+  // Basic validation to prevent saving invalid empty/null documents
+  if (!title || !url) {
+    return res.status(400).json({
+      error: 'Bad Request: "title" and "url" are required fields and cannot be empty.'
+    });
+  }
+
   try {
     const collection = await getCollection();
     const job = {
