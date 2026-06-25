@@ -92,9 +92,15 @@
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
 
   body {
+    max-width: 100%;
+    overflow-x: hidden;
     /* ── Light: soft pink-to-sky pastel gradient ── */
     background-image: radial-gradient(circle farthest-corner at 10% 20%, rgba(248,180,244,1) 0%, rgba(169,219,237,1) 90%);
     background-attachment: fixed;
