@@ -22,13 +22,19 @@
 CareerSync AI is a full-stack job-matching automation system. An **n8n workflow** runs on a schedule, scrapes RSS job feeds, uses **Groq AI** and **Google Gemini** to score each job against your resume, stores the results in **MongoDB Atlas**, and notifies you on **WhatsApp**. A **React dashboard** lets you browse, filter, and analyse all matched jobs — and copy tailored cover letters with one click.
 
 ### 🖥️ Dashboard Interface
-![React Dashboard UI](./screenshots/dashboard_ui.png)
+<p align="center">
+  <img src="./screenshots/dashboard_ui.png" alt="React Dashboard UI" width="750" />
+</p>
 
 ### 🤖 n8n Automation Workflow Canvas
-![n8n Workflow](./screenshots/n8n_workflow.png)
+<p align="center">
+  <img src="./screenshots/n8n_workflow.png" alt="n8n Workflow" width="750" />
+</p>
 
 ### 💡 Detailed AI Fit Analysis & Tailored Cover Letter Modal
-![Job Detail & Analysis Modal](./screenshots/detail_modal.png)
+<p align="center">
+  <img src="./screenshots/detail_modal.png" alt="Job Detail & Analysis Modal" width="750" />
+</p>
 
 ---
 
