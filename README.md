@@ -33,6 +33,7 @@ CareerSync AI is a full-stack job-matching automation system. An **n8n workflow*
 - **Gap analysis** — identifies missing skills between your resume and the job
 - **Resume alignment tips** — actionable improvements for each role
 - **WhatsApp notifications** when high-match jobs are found
+- **Gmail email notifications** with full fit summaries, gaps, and resume tips
 - **HTTP Request node** → `POST /api/jobs` to save results to MongoDB
 
 ### 🖥️ React Dashboard (Frontend)
@@ -109,6 +110,7 @@ careersync-ai/
 | **Google Gemini** | Secondary analysis model |
 | **MongoDB Atlas** | Cloud database for job storage |
 | **WhatsApp Business API** | Job match notifications |
+| **Gmail OAuth2 API** | Detailed email digests and job analysis |
 
 ---
 
@@ -286,8 +288,8 @@ Code in JavaScript (format output)
 HTTP Request → POST /api/jobs  ← saves to MongoDB via your API
     ↓
 Insert Documents (MongoDB direct)
-    ↓
-Send a Message (WhatsApp notification)
+    ├─ Send a Message (WhatsApp notification)
+    └─ Gmail (Detailed email notifications)
 ```
 
 ### HTTP Request Node Configuration
@@ -311,6 +313,58 @@ Send a Message (WhatsApp notification)
 | `cover_letter` | `{{ $json.cover_letter }}` |
 
 > ⚠️ n8n Cloud blocks `localhost` — use a deployed public URL.
+
+### 🔔 Notification Nodes Configuration
+
+You can configure n8n to send real-time alerts to both **WhatsApp** and **Gmail** when high-match jobs are found.
+
+#### 1. WhatsApp Notifications Setup
+To send alerts directly to your phone, use either the native **WhatsApp Business Cloud API** node or the **Twilio** node in n8n.
+
+*   **Credential Setup (WhatsApp Business Cloud API):**
+    1.  Create a Meta Developer account and set up the WhatsApp Business Platform.
+    2.  Obtain your **Temporary Access Token** (or Permanent System User Token) and **Phone Number ID**.
+    3.  Create a new credential in n8n under **WhatsApp Business Cloud API** and input these details.
+*   **Node Configuration:**
+    *   **Resource:** `Message`
+    *   **Operation:** `Send Text` (or `Send Template` if using WhatsApp Business Templates)
+    *   **Recipient Phone Number:** Your phone number with country code (e.g., `+1234567890`)
+    *   **Message:**
+        ```text
+        🚀 *CareerSync AI — High Match Job Found!*
+        *Job:* {{ $json.title }}
+        *Match Score:* {{ $json.match_score }}%
+        *URL:* {{ $json.url }}
+        *Fit Summary:* {{ $json.fit_summary }}
+        ```
+
+#### 2. Gmail Notifications Setup
+To send detailed HTML digests to your inbox, use the native **Gmail** node.
+
+*   **Credential Setup:**
+    1.  Add a **Gmail OAuth2 API** credential in n8n.
+    2.  Set up an OAuth Consent Screen and credentials in the Google Cloud Console to get a Client ID and Client Secret, or use n8n's OAuth credentials helper.
+*   **Node Configuration:**
+    *   **Resource:** `Message`
+    *   **Operation:** `Send`
+    *   **To:** `your.email@gmail.com`
+    *   **Subject:** `[CareerSync AI] High Match: {{ $json.title }} ({{ $json.match_score }}%)`
+    *   **Body Type:** `HTML`
+    *   **Email Body:**
+        ```html
+        <h3>🚀 CareerSync AI Match Found!</h3>
+        <p><strong>Job Title:</strong> {{ $json.title }}</p>
+        <p><strong>Match Score:</strong> <span style="color:#059669;font-weight:bold;">{{ $json.match_score }}%</span></p>
+        <hr />
+        <h4>💡 Fit Summary</h4>
+        <p>{{ $json.fit_summary }}</p>
+        <h4>⚠️ Identified Gaps</h4>
+        <p>{{ $json.gaps }}</p>
+        <h4>📝 Resume Tips</h4>
+        <p>{{ $json.tailored_resume_tips }}</p>
+        <br />
+        <a href="{{ $json.url }}" style="display:inline-block;background:#0284c7;color:#ffffff;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">Apply / View Posting</a>
+        ```
 
 ---
 
