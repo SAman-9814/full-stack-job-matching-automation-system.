@@ -77,7 +77,6 @@ function App() {
 
   const deleteJob = async (id, e) => {
     e.stopPropagation();
-    if (!window.confirm('Are you sure you want to delete this job application?')) return;
     try {
       const response = await fetch(`${API_URL}/api/jobs/${id}`, {
         method: 'DELETE',
